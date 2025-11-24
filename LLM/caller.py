@@ -1,6 +1,5 @@
 import os
 from datapizza.clients.openai import OpenAIClient
-from datapizza.tracing import ContextTracing
 import logging
 
 class Caller:
@@ -74,10 +73,10 @@ class Caller:
             model=model_name
         )
         logging.info("hello world")
-        with ContextTracing().trace("my_operation"):
-            response = await client.invoke(self.get_promt(text, required_values))
+        #with ContextTracing().trace("my_operation"):
+        response = client.invoke(self.get_promt(text, required_values))
         try:
-            final_response_text = await response.text()
+            final_response_text = response.text
             logging.info(final_response_text)
             
             # Return the final text string
