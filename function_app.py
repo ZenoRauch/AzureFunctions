@@ -2,7 +2,7 @@ import azure.functions as func
 import logging
 from Dynamics.connection import Connection
 from LLM.caller import Caller
-
+import json
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
 
@@ -37,6 +37,27 @@ async def sample_http_trigger(req: func.HttpRequest) -> func.HttpResponse:
         return func.HttpResponse(
                 f"Failed to acquire token.",
                 status_code=400
+            )
+    
+@app.route("anotherone")
+def anotherone(req: func.HttpRequest)->func.HttpResponse:
+    try:
+        
+        jsondata = json.load(req.get_json())
+        name = jsondata["name"]
+        for item in jsondata:
+            logging.info(item)
+        content = req.get_body()
+        logging.info(name)
+        logging.info(content)
+        return func.HttpResponse(
+                f"Received Data: name {name}, body {content}",
+                status_code=200
+            )
+    except Exception:
+        return func.HttpResponse(
+                f"Received Data from your request",
+                status_code=200
             )
 
 
